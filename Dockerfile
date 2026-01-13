@@ -5,12 +5,12 @@ FROM python:3.10-slim
 WORKDIR /app
 
 # Install system dependencies for OpenCV and PaddleOCR
-RUN apt-get update && apt-get install -y \\
-    libgl1-mesa-glx \\
-    libglib2.0-0 \\
-    libsm6 \\
-    libxext6 \\
-    libxrender-dev \\
+RUN apt-get update && apt-get install -y \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy the current directory contents into the container
@@ -23,4 +23,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 7860
 
 # Command to run the application
-CMD [\"python\", \"app.py\"]
+CMD ["python", "app.py"]
