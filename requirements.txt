@@ -1,3 +1,5 @@
+torch==2.2.0
+easyocr
 paddlepaddle
 paddleocr
 fastapi

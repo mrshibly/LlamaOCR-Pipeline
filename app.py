@@ -6,7 +6,7 @@ import shutil
 import os
 import cv2
 import numpy as np
-from paddleocr import PaddleOCR
+import easyocr
 import unicodedata
 import re
 import requests
@@ -16,7 +16,8 @@ from groq import Groq
 app = FastAPI()
 
 # 🧠 Singleton OCR & LLM Initialization
-ocr = PaddleOCR(use_angle_cls=True, lang='bn', use_gpu=False, show_log=True)
+# 🧠 Singleton OCR & LLM Initialization (EasyOCR)
+ocr_reader = easyocr.Reader(['bn', 'en'], gpu=False, download_enabled=True)
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 def preprocess_image(image):
@@ -25,9 +26,9 @@ def preprocess_image(image):
     return thresh
 
 def run_ocr(image):
-    result = ocr.ocr(image, cls=True)
-    text_lines = [line[1][0] for line in result[0]] if (result and result[0]) else []
-    return unicodedata.normalize("NFKC", "\n".join(text_lines))
+    result = ocr_reader.readtext(image, detail=0)
+    text = "\n".join(result)
+    return unicodedata.normalize("NFKC", text)
 
 def extract_info(text):
     data = {}
