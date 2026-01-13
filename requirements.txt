@@ -1,0 +1,9 @@
+paddlepaddle
+paddleocr
+fastapi
+uvicorn
+python-multipart
+opencv-python-headless
+numpy
+requests
+groq
