@@ -34,18 +34,18 @@ The system is architected as a microservice using **FastAPI**, containerized wit
 
 ```mermaid
 graph TD
-    Client([Client / Web UI]) -->|POST /extract (Image)| API[FastAPI Gateway]
+    Client(["Client / Web UI"]) -->|"POST /extract (Image)"| API["FastAPI Gateway"]
     
     subgraph "Inference Pipeline"
-        API -->|1. Preprocessing| CV[OpenCV Module]
-        CV -->|Grayscale/Binarization| OCR[EasyOCR Engine (PyTorch)]
-        OCR -->|2. Text Detection & Recognition| RawText[Raw Text Data]
-        RawText -->|3. Context Construction| Prompt[Prompt Engineering]
-        Prompt -->|4. Semantic Extraction| LLM[Llama 3.3 70B (via Groq)]
+        API -->|"1. Preprocessing"| CV["OpenCV Module"]
+        CV -->|"Grayscale/Binarization"| OCR["EasyOCR Engine (PyTorch)"]
+        OCR -->|"2. Text Detection & Recognition"| RawText["Raw Text Data"]
+        RawText -->|"3. Context Construction"| Prompt["Prompt Engineering"]
+        Prompt -->|"4. Semantic Extraction"| LLM["Llama 3.3 70B (via Groq)"]
     end
     
-    LLM -->|Normalized JSON| API
-    API -->|Structured Response| Client
+    LLM -->|"Normalized JSON"| API
+    API -->|"Structured Response"| Client
 ```
 
 ---
