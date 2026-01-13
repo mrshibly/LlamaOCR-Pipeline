@@ -1,131 +1,132 @@
-# 📄 Bangla-English Document AI Pipeline
+# 📄 Bangla-English Document Intelligence Pipeline
 
-[![Live Demo](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Live%20Demo-blue)](https://huggingface.co/spaces/mrshibly/LlamaOCR-Pipeline)
-[![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/release/python-3100/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green.svg)](https://fastapi.tiangolo.com/)
+[![Hugging Face - Live Demo](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Live%20Space-blue)](https://huggingface.co/spaces/mrshibly/LlamaOCR-Pipeline)
+[![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-High%20Performance-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![LLM](https://img.shields.io/badge/Groq-Llama%203.3-orange)](https://groq.com/)
 
-A professional-grade Document AI pipeline that extracts structured information (Names, NID, DOB, Address) from scanned Bangla and English documents using **EasyOCR** and **Llama 3 (via Groq)**.
-
-## 🎬 Live Demo
-
-**🚀 Try it now:** [https://huggingface.co/spaces/mrshibly/LlamaOCR-Pipeline](https://huggingface.co/spaces/mrshibly/LlamaOCR-Pipeline)
-
-### Demo Video
-
-![Demo](./20260113-2032-01.9113974.mp4)
+A production-ready **Document AI** solution designed to automate the extraction of structured data from bilingual (Bangla/English) identity documents. This project demonstrates a hybrid approach combining **Deep Learning OCR** with **Large Language Models (LLMs)** for semantic parsing.
 
 ---
 
-## 🚀 Overview
+## 🚀 Live Demo & Preview
 
-This project provides an end-to-end solution for digitizing identification documents. It combines traditional computer vision (OpenCV), state-of-the-art OCR (EasyOCR), and Large Language Models (LLMs) to transform messy document images into clean, structured JSON data.
+**🔗 Try the App:** [**LlamaOCR-Pipeline on Hugging Face Spaces**](https://huggingface.co/spaces/mrshibly/LlamaOCR-Pipeline)
 
-### Key Features:
-- **Hybrid OCR**: High-accuracy recognition for both Bangla and English scripts using EasyOCR.
-- **LLM-Powered Extraction**: Uses Llama 3.3 70B (Groq) to understand document semantics and extract names/addresses.
-- **Interactive UI**: A sleek, glassmorphism-inspired web interface built with Tailwind CSS.
-- **Dockerized**: Fully containerized and ready for deployment on Hugging Face Spaces or cloud platforms.
-- **Production Ready**: Deployed and running live on Hugging Face Spaces.
+### System in Action
+![System Demo](samples/output-video.gif)
 
 ---
 
-## 🏗️ Architecture
+## 🎯 Problem Statement
+Extracting structured information from non-standardized/noisy documents (like National IDs in mixed languages) is a classic computer vision challenge. Traditional rule-based regex fails on unstructured layouts, while pure OCR lacks semantic understanding.
+
+**Solution:** A robust pipeline that layers:
+1.  **Computer Vision:** For image cleanup and preprocessing.
+2.  **Deep Learning OCR (EasyOCR/PyTorch):** For accurate character recognition in low-resource languages (Bengali).
+3.  **Generative AI (Llama 3):** For context-aware information extraction and JSON structuring.
+
+---
+
+## 🏗️ System Architecture
+
+The system is architected as a microservice using **FastAPI**, containerized with **Docker** for consistent deployment.
 
 ```mermaid
 graph TD
-    User([User]) -->|Upload Image| WebUI[Web Interface]
-    WebUI -->|POST /extract| API[FastAPI Backend]
+    Client([Client / Web UI]) -->|POST /extract (Image)| API[FastAPI Gateway]
     
-    subgraph "Processing Pipeline"
-        API -->|1. Grayscale & Otsu| CV2[OpenCV Preprocessing]
-        CV2 -->|2. Multilingual OCR| OCR[EasyOCR Engine]
-        OCR -->|3. Raw Text| Regex[Regex Fast-Extraction]
-        Regex -->|4. Semantic Context| LLM[Groq Llama-3.3 API]
+    subgraph "Inference Pipeline"
+        API -->|1. Preprocessing| CV[OpenCV Module]
+        CV -->|Grayscale/Binarization| OCR[EasyOCR Engine (PyTorch)]
+        OCR -->|2. Text Detection & Recognition| RawText[Raw Text Data]
+        RawText -->|3. Context Construction| Prompt[Prompt Engineering]
+        Prompt -->|4. Semantic Extraction| LLM[Llama 3.3 70B (via Groq)]
     end
     
-    LLM -->|Structured JSON| API
-    API -->|Final Response| WebUI
+    LLM -->|Normalized JSON| API
+    API -->|Structured Response| Client
 ```
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Technical Stack
 
-- **Backend**: FastAPI, Uvicorn
-- **OCR Engine**: EasyOCR (PyTorch)
-- **Image Processing**: OpenCV, NumPy
-- **LLM Integration**: Groq SDK (Llama 3.3 70B)
-- **Frontend**: HTML5, Tailwind CSS, JavaScript
-- **Deployment**: Docker, Hugging Face Spaces
+### Core AI/ML Components
+*   **OCR Engine:** **EasyOCR** (based on PyTorch) – Chosen for its superior performance on Bengali scripts compared to Tesseract.
+*   **LLM Inference:** **Llama 3.3 70B** via **Groq API** – Selected for near-instant inference capabilities, ensuring low latency for the end-user.
+*   **Preprocessing:** **OpenCV** & **NumPy** – Adaptive thresholding and noise reduction.
+
+### Backend & DevOps
+*   **Framework:** **FastAPI** (Python 3.10) – Asynchronous request handling.
+*   **Containerization:** **Docker** – Multi-stage build optimized for CPU-only environments (Hugging Face Spaces).
+*   **CI/CD:** Automated deployment triggers via Hugging Face.
 
 ---
 
-## 📦 Installation & Setup
+## 📦 Installation & Local Development
 
-### 1. Clone the repository
+### Prerequisites
+*   Python 3.10+
+*   Groq API Key (for LLM inference)
+
+### 1. Clone & Setup
 ```bash
 git clone https://github.com/mrshibly/LlamaOCR-Pipeline.git
 cd LlamaOCR-Pipeline
-```
 
-### 2. Install Dependencies
-```bash
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-### 3. Set Environment Variables
+### 2. Configuration
+Create a `.env` file or export your API key:
 ```bash
-# Set your Groq API Key
-export GROQ_API_KEY="your_api_key_here"
+export GROQ_API_KEY="your_actual_key_here"
 ```
 
-### 4. Run Locally
+### 3. Run the Service
 ```bash
 python app.py
 ```
-Access the app at `http://localhost:7860`.
+*The UI will be accessible at `http://localhost:7860`*
 
 ---
 
 ## 🐳 Docker Deployment
 
-To build and run the container locally:
+This project includes a production-optimized `Dockerfile`.
+
 ```bash
-docker build -t document-ai .
-docker run -p 7860:7860 -e GROQ_API_KEY="your_api_key" document-ai
+# Build the image
+docker build -t llamaocr-pipeline .
+
+# Run container (mapping port 7860)
+docker run -p 7860:7860 -e GROQ_API_KEY="your_key" llamaocr-pipeline
 ```
-
-## 🌐 Hugging Face Spaces Deployment
-
-The app is deployed on Hugging Face Spaces using Docker SDK:
-
-1. Create a new Space on Hugging Face
-2. Select **Docker** as the SDK
-3. Connect your GitHub repository
-4. Add `GROQ_API_KEY` as a secret in Space settings
-5. The Space will automatically build and deploy
-
-**Live Demo:** [https://huggingface.co/spaces/mrshibly/LlamaOCR-Pipeline](https://huggingface.co/spaces/mrshibly/LlamaOCR-Pipeline)
 
 ---
 
-## 📂 Project Structure
-```
-.
-├── app.py                 # Core FastAPI application and logic
-├── index.html            # Interactive frontend
-├── Dockerfile            # Docker configuration for deployment
-├── requirements.txt      # Python dependencies
-├── notebooks/            # Research and development exploration
-├── samples/              # Example document images for testing
-└── README.md             # This file
+## 📂 Repository Structure
+
+```text
+├── app.py                 # Application entry point & pipeline logic
+├── Dockerfile             # Container configuration for HF Spaces
+├── requirements.txt       # Pinned dependencies (Torch, EasyOCR, FastAPI)
+├── index.html             # Frontend interface (Tailwind CSS)
+├── samples/               # Test assets (NID images, Demo GIF)
+└── notebooks/             # Exploratory Data Analysis (EDA) & Prototyping
 ```
 
 ---
 
 ## 👨‍💻 Author
 
-**Shibly Ahmed**  
-*Software Engineer | AI Enthusiast*
+**Md. Mahmudur Rahman**  
+*Machine Learning Engineer | AI Researcher*
 
-[GitHub](https://github.com/mrshibly) | [Hugging Face](https://huggingface.co/mrshibly)
+Specializing in Computer Vision, NLP, and Scalable AI Systems.
+
+📧 **Email:** [mahmudurrahman858@gmail.com](mailto:mahmudurrahman858@gmail.com)  
+🔗 **LinkedIn:** [linkedin.com/in/mrshibly](https://www.linkedin.com/in/mrshibly)  
+🐙 **GitHub:** [github.com/mrshibly](https://github.com/mrshibly)
