@@ -16,7 +16,8 @@ from groq import Groq
 app = FastAPI()
 
 # 🧠 Singleton OCR & LLM Initialization
-ocr = PaddleOCR(use_angle_cls=True, lang='bn', use_gpu=False, ocr_version='PP-OCRv3')
+# Using PP-OCRv4 as it has broader multilingual support including Bengali
+ocr = PaddleOCR(use_angle_cls=True, lang='bn', use_gpu=False, ocr_version='PP-OCRv4', show_log=True)
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 def preprocess_image(image):
