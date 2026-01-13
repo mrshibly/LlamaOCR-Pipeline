@@ -4,9 +4,6 @@ FROM python:3.10-slim
 # Set the working directory
 WORKDIR /app
 
-# Bypass PaddleOCR connectivity check
-ENV DISABLE_MODEL_SOURCE_CHECK=True
-
 # Install system dependencies for OpenCV and PaddleOCR
 RUN apt-get update && apt-get install -y \
     gcc \
