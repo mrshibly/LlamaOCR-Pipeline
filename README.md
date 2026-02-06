@@ -32,7 +32,7 @@ Extracting structured information from non-standardized/noisy documents (like Na
 
 The system is architected as a microservice using **FastAPI**, containerized with **Docker** for consistent deployment.
 
-<img width="3308" height="2624" alt="image" src="https://github.com/user-attachments/assets/2d1da1bc-16ea-4df0-8d6c-61ffe592de7e" />
+<img width="2676" height="2883" alt="image" src="https://github.com/user-attachments/assets/eacdb4f4-e951-4209-b2e2-38fc4e3a1098" />
 
 ---
 
