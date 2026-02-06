@@ -32,21 +32,7 @@ Extracting structured information from non-standardized/noisy documents (like Na
 
 The system is architected as a microservice using **FastAPI**, containerized with **Docker** for consistent deployment.
 
-```mermaid
-graph TD
-    Client(["Client / Web UI"]) -->|"POST /extract (Image)"| API["FastAPI Gateway"]
-    
-    subgraph "Inference Pipeline"
-        API -->|"1. Preprocessing"| CV["OpenCV Module"]
-        CV -->|"Grayscale/Binarization"| OCR["EasyOCR Engine (PyTorch)"]
-        OCR -->|"2. Text Detection & Recognition"| RawText["Raw Text Data"]
-        RawText -->|"3. Context Construction"| Prompt["Prompt Engineering"]
-        Prompt -->|"4. Semantic Extraction"| LLM["Llama 3.3 70B (via Groq)"]
-    end
-    
-    LLM -->|"Normalized JSON"| API
-    API -->|"Structured Response"| Client
-```
+<img width="3308" height="2624" alt="image" src="https://github.com/user-attachments/assets/2d1da1bc-16ea-4df0-8d6c-61ffe592de7e" />
 
 ---
 
